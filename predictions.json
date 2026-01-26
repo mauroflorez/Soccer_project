@@ -1,10 +1,10 @@
 [
     {
-        "HomeTeam": "Brighton",
-        "AwayTeam": "Everton",
-        "HomeGoals_Exp": 1.473130073384764,
-        "AwayGoals_Exp": 1.2070311870508075,
-        "PredictedScore": "1 - 1"
+        "HomeTeam": "Everton",
+        "AwayTeam": "Leeds",
+        "HomeGoals_Exp": 1.5024548189587321,
+        "AwayGoals_Exp": 1.1711313244996517,
+        "PredictedScore": "2 - 1"
     },
     {
         "HomeTeam": "Leeds",
@@ -19,6 +19,13 @@
         "HomeGoals_Exp": 1.520464639018594,
         "AwayGoals_Exp": 1.1605085427706665,
         "PredictedScore": "2 - 1"
+    },
+    {
+        "HomeTeam": "Brighton",
+        "AwayTeam": "Everton",
+        "HomeGoals_Exp": 1.473130073384764,
+        "AwayGoals_Exp": 1.2070311870508075,
+        "PredictedScore": "1 - 1"
     },
     {
         "HomeTeam": "Chelsea",

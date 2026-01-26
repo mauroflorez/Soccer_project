@@ -107,57 +107,72 @@ from datetime import datetime
 
 def get_next_fixtures(df):
     """
-    Returns the upcoming fixtures for the next round (Jan 31 - Feb 2).
+    Returns the upcoming fixtures based on user input (Jan 26 - Feb 2).
     """
-    # Hardcoded for the specific upcoming round requested
     return [
-        ("Brighton", "Everton"),
-        ("Leeds", "Arsenal"),
-        ("Wolves", "Bournemouth"), 
-        ("Chelsea", "West Ham"),
-        ("Liverpool", "Newcastle"),
-        ("Aston Villa", "Brentford"),
-        ("Man United", "Fulham"),
-        ("Nott'm Forest", "Crystal Palace"),
-        ("Tottenham", "Man City"),
-        ("Sunderland", "Burnley")
+        ("Everton", "Leeds"),            # Jan 26
+        ("Leeds", "Arsenal"),           # Jan 31
+        ("Wolves", "Bournemouth"),      # Jan 31
+        ("Brighton", "Everton"),        # Jan 31
+        ("Chelsea", "West Ham"),        # Jan 31
+        ("Liverpool", "Newcastle"),     # Jan 31
+        ("Aston Villa", "Brentford"),   # Feb 1
+        ("Man United", "Fulham"),       # Feb 1
+        ("Nott'm Forest", "Crystal Palace"), # Feb 1 (Check team name spelling in CSV)
+        ("Tottenham", "Man City"),      # Feb 1
+        ("Sunderland", "Burnley")       # Feb 2
     ]
 
 def evaluate_past_predictions(df, models):
     """
-    Identifies the most recent completed matches (last round) and retroactively 
-    generates predictions for them to show 'how we would have done'.
-    In a real production system, we would load SAVED predictions. 
-    Here, we simulate the 'Previous Predictions' by running the model on the just-finished games.
+    Evaluates predictions against the specific results provided by the user (Jan 24-25).
+    Since the CSV might lag, we hardcoded the actuals here to ensure the website shows them correctly.
     """
-    df['Date'] = pd.to_datetime(df['Date'], dayfirst=True)
-    # Get the last date present in the data
-    last_date = df['Date'].max()
+    # Specific results from Jan 24-25
+    recent_results = [
+        {"Home": "West Ham", "Away": "Sunderland", "Actual": "3 - 1"},
+        {"Home": "Fulham", "Away": "Brighton", "Actual": "2 - 1"},
+        {"Home": "Burnley", "Away": "Tottenham", "Actual": "2 - 2"},
+        {"Home": "Man City", "Away": "Wolves", "Actual": "2 - 0"},
+        {"Home": "Bournemouth", "Away": "Liverpool", "Actual": "3 - 2"},
+        {"Home": "Crystal Palace", "Away": "Chelsea", "Actual": "1 - 3"},
+        {"Home": "Newcastle", "Away": "Aston Villa", "Actual": "0 - 2"},
+        {"Home": "Brentford", "Away": "Nott'm Forest", "Actual": "0 - 2"}, # Check spelling
+        {"Home": "Arsenal", "Away": "Man United", "Actual": "2 - 3"}
+    ]
     
-    # Get all games from that last date (or last 3 days)
-    # Assuming 'today' is Jan 25, we look for games around then.
-    recent_games = df[df['Date'] >= last_date - pd.Timedelta(days=2)]
+    # Handle team name mapping if needed (e.g. Nott'm Forest vs Nottm Forest)
+    # in matches.csv it's usually "Nott'm Forest"
     
-    results = []
-    for _, row in recent_games.iterrows():
-        home = row['HomeTeam']
-        away = row['AwayTeam']
-        actual_score = f"{row['FTHG']} - {row['FTAG']}"
+    results_data = []
+    teams_in_db = set(df['HomeTeam'].unique())
+
+    for match in recent_results:
+        home = match["Home"]
+        away = match["Away"]
         
+        # Simple name correction if needed
+        if home == "Nottm Forest" and "Nott'm Forest" in teams_in_db: home = "Nott'm Forest"
+        if away == "Nottm Forest" and "Nott'm Forest" in teams_in_db: away = "Nott'm Forest"
+
+        if home not in teams_in_db or away not in teams_in_db:
+            print(f"Skipping {home} vs {away} - Not in dataset")
+            continue
+
         # Retroactive prediction
         pred = predict_match(home, away, models, df)
         
-        if isinstance(pred, str): continue # Error
+        if isinstance(pred, str): continue 
         
-        results.append({
+        results_data.append({
             'HomeTeam': home,
             'AwayTeam': away,
             'PredictedScore': pred['PredictedScore'],
-            'ActualScore': actual_score,
+            'ActualScore': match["Actual"],
             'ExpectedGoals': f"{pred['HomeGoals_Exp']:.2f} - {pred['AwayGoals_Exp']:.2f}"
         })
         
-    return results
+    return results_data
 
 def main():
     parser = argparse.ArgumentParser(description="Predict EPL Match Scores")
