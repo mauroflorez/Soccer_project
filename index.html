@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPL Score Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #37003c; /* Premier League Purple */
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #555;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .score {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #37003c;
+        }
+        .expected {
+            color: #777;
+            font-size: 0.9em;
+        }
+        .last-updated {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Premier League Predictions</h1>
+        <p style="text-align: center;">AI-powered score predictions based on recent form (Poisson Regression).</p>
+        
+        <table id="predictions-table">
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    <th>Predicted Score</th>
+                    <th>Expected Goals (xG)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+
+        <div class="last-updated" id="last-updated"></div>
+    </div>
+
+    <script>
+        async function loadPredictions() {
+            try {
+                // In GitHub Pages, this file will be at the root
+                const response = await fetch('predictions.json');
+                const predictions = await response.json();
+                
+                const tableBody = document.querySelector('#predictions-table tbody');
+                tableBody.innerHTML = ''; // Clear loading state
+
+                predictions.forEach(pred => {
+                    const row = document.createElement('tr');
+                    
+                    const matchCell = document.createElement('td');
+                    matchCell.textContent = `${pred.HomeTeam} vs ${pred.AwayTeam}`;
+                    
+                    const scoreCell = document.createElement('td');
+                    scoreCell.className = 'score';
+                    scoreCell.textContent = pred.PredictedScore;
+                    
+                    const xgCell = document.createElement('td');
+                    xgCell.className = 'expected';
+                    xgCell.textContent = `${pred.HomeGoals_Exp.toFixed(2)} - ${pred.AwayGoals_Exp.toFixed(2)}`;
+                    
+                    row.appendChild(matchCell);
+                    row.appendChild(scoreCell);
+                    row.appendChild(xgCell);
+                    tableBody.appendChild(row);
+                });
+
+                document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleDateString()}`;
+
+            } catch (error) {
+                console.error("Error loading predictions:", error);
+                document.querySelector('#predictions-table tbody').innerHTML = `<tr><td colspan="3">Error loading predictions. Please check back later.</td></tr>`;
+            }
+        }
+
+        loadPredictions();
+    </script>
+</body>
+</html>

@@ -102,10 +102,46 @@ def predict_match(home_team, away_team, models, df):
         'PredictedScore': f"{int(round(home_goals_exp))} - {int(round(away_goals_exp))}"
     }
 
+import json
+
+def get_next_fixtures(df):
+    """
+    Simulates fetching next fixtures.
+    In a real scenario, this would check an API or the schedule in the dataframe.
+    For this demo, we'll pick distinct teams that haven't played recently or just select top teams.
+    To be robust for the website, we'll manually define a 'next round' or just predict a set of popular matchups
+    if we can't determine the exact schedule from the CSV easily.
+    Better: Let's assume we want to predict for ALL teams vs their likely next opponents. 
+    Since we don't have a schedule API, we will just generate predictions for a few key matchups 
+    or allow the Github Action to pass them in.
+    
+    For the automated website, let's predict a fixed set of 'Big 6' matchups + others, 
+    OR we can just predict a set of random matchups to show functionality.
+    
+    Actually, the best way for the website is to predict for a specific list.
+    Let's just predict a set of interesting matches for now.
+    """
+    teams = df['HomeTeam'].unique()
+    matchups = [
+        ("Arsenal", "Tottenham"),
+        ("Man City", "Liverpool"),
+        ("Chelsea", "Man United"),
+        ("Newcastle", "West Ham"),
+        ("Everton", "Aston Villa") # Assuming Aston Villa is in dataset
+    ]
+    # Filter for teams that actually exist in our dataset
+    valid_matchups = []
+    for h, a in matchups:
+        if h in teams and a in teams:
+            valid_matchups.append((h, a))
+            
+    return valid_matchups
+
 def main():
     parser = argparse.ArgumentParser(description="Predict EPL Match Scores")
     parser.add_argument("--home", type=str, help="Home Team Name", required=False)
     parser.add_argument("--away", type=str, help="Away Team Name", required=False)
+    parser.add_argument("--json", type=str, help="Output JSON file path", required=False)
     args = parser.parse_args()
 
     print("Loading models and data...")
@@ -118,33 +154,46 @@ def main():
 
     teams = sorted(df['HomeTeam'].unique())
     
+    predictions = []
+
     if args.home and args.away:
-        # Predict single match from arguments
+        # Predict single match
         if args.home not in teams or args.away not in teams:
-            print(f"Error: Invalid team name. Available teams: {teams[:5]}...")
+            print(f"Error: Invalid team name.")
             return
         result = predict_match(args.home, args.away, models, df)
+        predictions.append(result)
+        
         print("\nPrediction:")
         print(f"{result['HomeTeam']} vs {result['AwayTeam']}")
         print(f"Expected Goals: {result['HomeGoals_Exp']:.2f} - {result['AwayGoals_Exp']:.2f}")
         print(f"SCORE PREDICTION: {result['PredictedScore']}")
         
-    else:
-        # Interactive Mode or Demo
-        print("\n--- Interactive Prediction Mode ---")
-        print("Enter team names exactly as they appear in data (e.g., 'Man City', 'Liverpool', 'Arsenal')")
+    elif args.json:
+        # Automated mode for website: Predict a batch of games
+        print("Generating batch predictions for website...")
+        matchups = get_next_fixtures(df)
         
+        for h, a in matchups:
+            result = predict_match(h, a, models, df)
+            predictions.append(result)
+            
+        # Write to JSON
+        with open(args.json, 'w') as f:
+            json.dump(predictions, f, indent=4)
+        print(f"Predictions saved to {args.json}")
+
+    else:
+        # Interactive Mode
+        print("\n--- Interactive Prediction Mode ---")
         while True:
             print(f"\nAvailable Teams (Top 5 alpha): {teams[:5]}...")
             h = input("Enter Home Team (or 'q' to quit): ").strip()
             if h.lower() == 'q': break
             a = input("Enter Away Team: ").strip()
             
-            if h not in teams:
-                print(f"Error: '{h}' not found.")
-                continue
-            if a not in teams:
-                print(f"Error: '{a}' not found.")
+            if h not in teams or a not in teams:
+                print("Error: Team not found.")
                 continue
                 
             result = predict_match(h, a, models, df)

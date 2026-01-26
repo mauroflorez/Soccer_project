@@ -1,0 +1,37 @@
+[
+    {
+        "HomeTeam": "Arsenal",
+        "AwayTeam": "Tottenham",
+        "HomeGoals_Exp": 1.8440617107629076,
+        "AwayGoals_Exp": 1.0103382025828225,
+        "PredictedScore": "2 - 1"
+    },
+    {
+        "HomeTeam": "Man City",
+        "AwayTeam": "Liverpool",
+        "HomeGoals_Exp": 1.3456899001192895,
+        "AwayGoals_Exp": 1.2396742156698508,
+        "PredictedScore": "1 - 1"
+    },
+    {
+        "HomeTeam": "Chelsea",
+        "AwayTeam": "Man United",
+        "HomeGoals_Exp": 1.3448243664162152,
+        "AwayGoals_Exp": 1.321549444556799,
+        "PredictedScore": "1 - 1"
+    },
+    {
+        "HomeTeam": "Newcastle",
+        "AwayTeam": "West Ham",
+        "HomeGoals_Exp": 1.9128241324554374,
+        "AwayGoals_Exp": 0.9678426215099241,
+        "PredictedScore": "2 - 1"
+    },
+    {
+        "HomeTeam": "Everton",
+        "AwayTeam": "Aston Villa",
+        "HomeGoals_Exp": 1.5709126334244528,
+        "AwayGoals_Exp": 1.1475238038699163,
+        "PredictedScore": "2 - 1"
+    }
+]
