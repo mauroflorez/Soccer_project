@@ -206,7 +206,7 @@ def main():
         
         # Keep relevant columns for the Bayesian model
         needed_cols = ['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR']
-        optional_cols = ['HS', 'AS', 'HST', 'AST', 'Season']
+        optional_cols = ['HS', 'AS', 'HST', 'AST', 'Season', 'B365H', 'B365D', 'B365A']
         
         # Add available optional columns
         for col in optional_cols:
@@ -228,6 +228,22 @@ def main():
         
         print("Merging features...")
         features_df = merge_features(df_subset, team_stats, position_df)
+        
+        # Calculate implied probabilities from betting odds
+        if 'B365H' in features_df.columns and 'B365A' in features_df.columns:
+            print("Calculating implied probabilities from betting odds...")
+            # Convert odds to probabilities (1/odds), then normalize
+            features_df['Odds_HomeProb'] = 1 / features_df['B365H']
+            features_df['Odds_DrawProb'] = 1 / features_df['B365D']
+            features_df['Odds_AwayProb'] = 1 / features_df['B365A']
+            
+            # Normalize to sum to 1 (remove bookmaker margin)
+            total_prob = features_df['Odds_HomeProb'] + features_df['Odds_DrawProb'] + features_df['Odds_AwayProb']
+            features_df['Odds_HomeProb'] = features_df['Odds_HomeProb'] / total_prob
+            features_df['Odds_AwayProb'] = features_df['Odds_AwayProb'] / total_prob
+            
+            # Drop raw odds columns (keep only implied probs)
+            features_df.drop(columns=['B365H', 'B365D', 'B365A', 'Odds_DrawProb'], inplace=True)
         
         # Drop rows with NaN (first few games where rolling stats are not available)
         na_count = features_df.isna().any(axis=1).sum()

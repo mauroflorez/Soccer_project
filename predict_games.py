@@ -152,13 +152,17 @@ def predict_match(home_team, away_team, models, df):
         'Home_AvgShots': home_stats.get('AvgShots', 12),
         'Home_AvgShotsOnTarget': home_stats.get('AvgShotsOnTarget', 4),
         'Away_AvgShots': away_stats.get('AvgShots', 10),
-        'Away_AvgShotsOnTarget': away_stats.get('AvgShotsOnTarget', 3.5)
+        'Away_AvgShotsOnTarget': away_stats.get('AvgShotsOnTarget', 3.5),
+        # Estimate odds probabilities based on position (rough approximation)
+        'Odds_HomeProb': max(0.25, 0.55 - (home_position - away_position) * 0.02),
+        'Odds_AwayProb': max(0.15, 0.25 + (home_position - away_position) * 0.02)
     }])
     
     # Replace NaN with reasonable defaults
     features = features.fillna({
         'Home_AvgShots': 12, 'Away_AvgShots': 10,
-        'Home_AvgShotsOnTarget': 4, 'Away_AvgShotsOnTarget': 3.5
+        'Home_AvgShotsOnTarget': 4, 'Away_AvgShotsOnTarget': 3.5,
+        'Odds_HomeProb': 0.45, 'Odds_AwayProb': 0.28
     })
     
     model_type = models.get('model_type', 'unknown')

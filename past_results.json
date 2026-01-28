@@ -4,62 +4,62 @@
         "AwayTeam": "Sunderland",
         "PredictedScore": "1 - 1",
         "ActualScore": "3 - 1",
-        "ExpectedGoals": "1.29 - 0.84"
+        "ExpectedGoals": "1.32 - 1.01"
     },
     {
         "HomeTeam": "Fulham",
         "AwayTeam": "Brighton",
-        "PredictedScore": "2 - 1",
+        "PredictedScore": "1 - 2",
         "ActualScore": "2 - 1",
-        "ExpectedGoals": "1.71 - 1.40"
+        "ExpectedGoals": "1.25 - 2.45"
     },
     {
         "HomeTeam": "Burnley",
         "AwayTeam": "Tottenham",
-        "PredictedScore": "1 - 2",
+        "PredictedScore": "1 - 3",
         "ActualScore": "2 - 2",
-        "ExpectedGoals": "0.88 - 2.15"
+        "ExpectedGoals": "0.67 - 3.01"
     },
     {
         "HomeTeam": "Man City",
         "AwayTeam": "Wolves",
-        "PredictedScore": "2 - 0",
+        "PredictedScore": "1 - 1",
         "ActualScore": "2 - 0",
-        "ExpectedGoals": "1.53 - 0.32"
+        "ExpectedGoals": "1.12 - 0.94"
     },
     {
         "HomeTeam": "Bournemouth",
         "AwayTeam": "Liverpool",
         "PredictedScore": "3 - 1",
         "ActualScore": "3 - 2",
-        "ExpectedGoals": "3.28 - 1.13"
+        "ExpectedGoals": "2.84 - 1.43"
     },
     {
         "HomeTeam": "Crystal Palace",
         "AwayTeam": "Chelsea",
-        "PredictedScore": "1 - 2",
+        "PredictedScore": "0 - 2",
         "ActualScore": "1 - 3",
-        "ExpectedGoals": "0.51 - 1.56"
+        "ExpectedGoals": "0.42 - 2.44"
     },
     {
         "HomeTeam": "Newcastle",
         "AwayTeam": "Aston Villa",
-        "PredictedScore": "3 - 1",
+        "PredictedScore": "3 - 2",
         "ActualScore": "0 - 2",
-        "ExpectedGoals": "2.77 - 1.45"
+        "ExpectedGoals": "2.75 - 1.93"
     },
     {
         "HomeTeam": "Brentford",
         "AwayTeam": "Nott'm Forest",
-        "PredictedScore": "2 - 1",
+        "PredictedScore": "1 - 2",
         "ActualScore": "0 - 2",
-        "ExpectedGoals": "1.68 - 0.62"
+        "ExpectedGoals": "1.11 - 1.56"
     },
     {
         "HomeTeam": "Arsenal",
         "AwayTeam": "Man United",
         "PredictedScore": "3 - 1",
         "ActualScore": "2 - 3",
-        "ExpectedGoals": "3.06 - 0.67"
+        "ExpectedGoals": "2.99 - 0.67"
     }
 ]
