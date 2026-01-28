@@ -32,9 +32,10 @@ jobs:
         python feature_engineering.py
         python train_model.py
         python predict_games.py --json predictions.json --past-results-json past_results.json
+        python track_predictions.py
 
     - name: Commit and Push changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: "Automated: Update predictions and past results"
-        file_pattern: 'data/*.csv predictions.json past_results.json models/*.pkl'
+        commit_message: "Automated: Update predictions and accuracy"
+        file_pattern: 'data/*.csv predictions.json past_results.json accuracy.json models/*.pkl'

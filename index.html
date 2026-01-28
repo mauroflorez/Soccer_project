@@ -98,6 +98,14 @@
     <div class="container">
         <h1>Premier League Predictions</h1>
 
+        <div id="accuracy-box"
+            style="text-align: center; padding: 1rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, #37003c 0%, #00ff85 100%); border-radius: 8px; color: white;">
+            <span style="font-size: 1.1rem;">Winner Prediction Accuracy:</span>
+            <span id="accuracy-value"
+                style="font-size: 1.5rem; font-weight: bold; margin-left: 0.5rem;">Loading...</span>
+            <span id="accuracy-detail" style="font-size: 0.9rem; margin-left: 0.5rem; opacity: 0.9;"></span>
+        </div>
+
         <div class="grid">
             <!-- Left Column: Past Results -->
             <div class="column">
@@ -152,6 +160,17 @@
                 if (resultResponse.ok) {
                     const results = await resultResponse.json();
                     populateTable('#past-table tbody', results, true);
+                }
+
+                // Load Accuracy
+                const accResponse = await fetch('accuracy.json');
+                if (accResponse.ok) {
+                    const acc = await accResponse.json();
+                    document.getElementById('accuracy-value').textContent = acc.accuracy + '%';
+                    document.getElementById('accuracy-detail').textContent =
+                        `(${acc.correct}/${acc.evaluated} correct, ${acc.pending} pending)`;
+                } else {
+                    document.getElementById('accuracy-value').textContent = 'N/A';
                 }
 
                 document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleDateString()}`;
