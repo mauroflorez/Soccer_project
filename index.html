@@ -143,6 +143,44 @@
         </div>
 
         <div class="last-updated" id="last-updated"></div>
+
+        <!-- Modeling Details Section -->
+        <div
+            style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #37003c;">
+            <h2 style="color: #37003c; margin-top: 0;">How It Works</h2>
+
+            <h3 style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">📊 The Model</h3>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 1rem;">
+                We use a <strong>Poisson regression model</strong> to predict expected goals for each team.
+                The model learns <em>team attack strength</em> and <em>defensive weakness</em> by analyzing
+                how each team performs across all matches in the current season.
+            </p>
+
+            <h3 style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">⚽ Features Used</h3>
+            <ul style="color: #666; line-height: 1.8; margin-bottom: 1rem; padding-left: 1.5rem;">
+                <li><strong>Team Effects:</strong> Attack strength for home team, defensive weakness for opponent</li>
+                <li><strong>League Position:</strong> Current standings in the table</li>
+                <li><strong>Rolling Stats:</strong> Goals, shots, and shots on target (last 5 games)</li>
+            </ul>
+
+            <h3 style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">🔄 Daily Updates</h3>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 1rem;">
+                The model is <strong>retrained daily</strong> using all matches played so far this season.
+                As more games are played, the model learns better estimates of each team's true strength.
+            </p>
+
+            <h3 style="font-size: 1rem; color: #555; margin-bottom: 0.5rem;">📈 Expected Goals (xG)</h3>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 0;">
+                The xG column shows the model's expected goals for each team. For example, "1.5 - 0.8" means
+                the home team is expected to score 1.5 goals on average, while the away team is expected to score 0.8.
+                The predicted score rounds these values to the nearest whole number.
+            </p>
+
+            <p style="color: #999; font-size: 0.85rem; margin-top: 1.5rem; font-style: italic;">
+                ⚠️ This is an experimental project for learning purposes. Predictions should not be used for any real
+                decisions.
+            </p>
+        </div>
     </div>
 
     <script>
